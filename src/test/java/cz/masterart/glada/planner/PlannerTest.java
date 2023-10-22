@@ -6,10 +6,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Set;
 
-public class PlannerTest {
+class PlannerTest {
     public static void main(String[] args) {
 
-        Set<LocalDate> holidays = Set.of(
+        Set<LocalDate> czechLegalHolidays = Set.of(
                 LocalDate.of(2020, 1, 1),
                 LocalDate.of(2020, 4, 7),
                 LocalDate.of(2020, 4, 10),
@@ -25,15 +25,13 @@ public class PlannerTest {
                 LocalDate.of(2020, 12, 26)
         );
 
-        Planner _planner = new Planner(0, holidays);
+        Planner _planner = new Planner(0, czechLegalHolidays);
         _planner.addLine(new ConditionLine.LineBuilder(3).workdaysOnly().build());
         _planner.addLine(new ConditionLine.LineBuilder(1).from(LocalTime.of(11,0)).to(LocalTime.of(13,0)).build());
         _planner.addLine(new ConditionLine.LineBuilder(2).from(LocalTime.of(17,0)).build());
         _planner.addLine(new ConditionLine.LineBuilder(4).weekDays(1,4,5).build());
         _planner.addLine(new ConditionLine.LineBuilder(5).monthDays(6, 8, 10).build());
         _planner.addLine(new ConditionLine.LineBuilder(6).months(7,11).build());
-
-
 
         LocalDateTime _checkedDate;
         _checkedDate = LocalDateTime.parse("2023.05.01 12:00", DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
@@ -54,12 +52,5 @@ public class PlannerTest {
         System.out.println("Checking months day condition (in):  " + (_planner.getActionID(_checkedDate) == 5 ? "OK" : "Not OK") + ". " + _planner.getCorrespondedLine(_checkedDate));
         _checkedDate = LocalDateTime.parse("2023.07.25 14:00", DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"));
         System.out.println("Checking month condition (in):  " + (_planner.getActionID(_checkedDate) == 6 ? "OK" : "Not OK") + ". " + _planner.getCorrespondedLine(_checkedDate));
-
-
-
-
-
-
-
     }
 }
